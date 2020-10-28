@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30517.126
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "2D Engine Base (SFML)", "2D Engine Base (SFML)\2D Engine Base (SFML).vcxproj", "{C6BB9087-D677-45AF-9996-1D599114109B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Debug|x64.ActiveCfg = Debug|x64
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Debug|x64.Build.0 = Debug|x64
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Debug|x86.ActiveCfg = Debug|Win32
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Debug|x86.Build.0 = Debug|Win32
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Release|x64.ActiveCfg = Release|x64
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Release|x64.Build.0 = Release|x64
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Release|x86.ActiveCfg = Release|Win32
+		{C6BB9087-D677-45AF-9996-1D599114109B}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {927BA7D4-88E6-4A0E-A177-5D66C5C72895}
+	EndGlobalSection
+EndGlobal
