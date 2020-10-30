@@ -20,6 +20,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\TileMap.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header\TileMap.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Texture\TestTexture1.png" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
@@ -75,6 +82,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IncludePath>A:\Programming\Visual Studio\Repo\2D Engine Base %28SFML%29\2D Engine Base %28SFML%29\Header;$(IncludePath)</IncludePath>
+    <SourcePath>A:\Programming\Visual Studio\Repo\2D Engine Base %28SFML%29\2D Engine Base %28SFML%29\Source;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -101,7 +110,8 @@
     </Link>
     <PostBuildEvent>
       <Command>set SFML=A:\Programming\Visual Studio\Library\32-bit\SFML-2.5.1
-xcopy "%SFML%\bin\*-d-2.dll" "$(TargetDir)" /Y /D</Command>
+xcopy "%SFML%\bin\*-d-2.dll" "$(TargetDir)" /Y /D
+xcopy "Texture" "$(TargetDir)Texture\" /Y /D /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
