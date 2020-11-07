@@ -20,9 +20,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="Source\Tile.cpp" />
     <ClCompile Include="Source\TileMap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Tile.h" />
     <ClInclude Include="Header\TileMap.h" />
   </ItemGroup>
   <ItemGroup>
