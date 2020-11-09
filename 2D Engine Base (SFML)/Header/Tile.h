@@ -1,12 +1,19 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "TileSet.h"
 
-class TileReference
+
+
+// This class is designed to hold a pointer to a tile reference and any unique properties.
+class Tile
 {
 private:
-	sf::String name = "UNDEFINED";
-	sf::Vector2i graphic_location = sf::Vector2i(-1, -1);
+	TileReference* container;
+	sf::Vertex* quad;
+	//TODO: Object Attachment
 public:
-	TileReference(sf::String name, sf::Vector2i graphic_location);
-	sf::Vector2i get();
+	Tile(TileSet &ts, int tile_index);
+	Tile(TileReference& tile);
+	TileReference& get();
+	void setVertexPointer(sf::Vertex* quad);
 };

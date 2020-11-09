@@ -1,12 +1,21 @@
 #include "Tile.h"
 
-TileReference::TileReference(sf::String name, sf::Vector2i graphic_location)
+Tile::Tile(TileSet &ts, int tile_index)
 {
-	this->name = name;
-	this->graphic_location = graphic_location;
+	this->container = &ts.getTile(tile_index);
 }
 
-sf::Vector2i TileReference::get()
+Tile::Tile(TileReference& tile)
 {
-	return this->graphic_location;
+	this->container = &tile;
+}
+
+TileReference& Tile::get()
+{
+	return *this->container;
+}
+
+void Tile::setVertexPointer(sf::Vertex* quad)
+{
+	this->quad = quad;
 }

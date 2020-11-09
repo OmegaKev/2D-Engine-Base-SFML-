@@ -10,7 +10,7 @@ TileMap::TileMap(TileSet *ts, const int* map, sf::Vector2u m_size)
 	}
 	this->ts = ts;
 	this->m_size = m_size;
-	this->map = map;
+	this->raw_map = map;
 }
 
 bool TileMap::load()
@@ -27,7 +27,7 @@ bool TileMap::load()
 	{
 		for (int j = 0; j < m_size.y; ++j)
 		{
-			int tile_index = map[i + j * m_size.x];
+			int tile_index = raw_map[i + j * m_size.x];
 
 			// Grab the texture coordinates for the tile
 			int tu = this->ts->getTile(tile_index).get().x;
@@ -36,13 +36,13 @@ bool TileMap::load()
 			// Manipulate 1 quad at a time
 			sf::Vertex * quad = &m_va[(i + j * m_size.x) * 4];
 			
-			setTexCoords(quad, tu, tv);
+			// Create the map and hold pointers to their data
+			map.push_back(Tile(this->ts->getTile(tile_index)));
+			map.back().setVertexPointer(quad);
 
-			// Set the position coordinates for the 4 points on the quad
-			quad[0].position = sf::Vector2f(i * ts->getTileSize().x, j * ts->getTileSize().y);
-			quad[1].position = sf::Vector2f((i + 1) * ts->getTileSize().x, j * ts->getTileSize().y);
-			quad[2].position = sf::Vector2f((i + 1) * ts->getTileSize().x, (j + 1) * ts->getTileSize().y);
-			quad[3].position = sf::Vector2f(i * ts->getTileSize().x, (j + 1) * ts->getTileSize().y);
+			// Set Tex Coordinates and position of tiles
+			setTexCoords(quad, tu, tv);
+			setDefaultTilePosition(quad, i, j);
 		}
 	}
 	
@@ -56,6 +56,16 @@ void TileMap::setTexCoords(sf::Vertex* quad, int tu, int tv)
 	quad[1].texCoords = sf::Vector2f((tu + 1) * ts->getTileSize().x, tv * ts->getTileSize().y);
 	quad[2].texCoords = sf::Vector2f((tu + 1) * ts->getTileSize().x, (tv + 1) * ts->getTileSize().y);
 	quad[3].texCoords = sf::Vector2f(tu * ts->getTileSize().x, (tv + 1) * ts->getTileSize().y);
+}
+
+// Sets a vertex quad position based on the row and column of the map
+void TileMap::setDefaultTilePosition(sf::Vertex* quad, int row, int col)
+{
+	// Set the position coordinates for the 4 points on the quad
+	quad[0].position = sf::Vector2f(row * ts->getTileSize().x, col * ts->getTileSize().y);
+	quad[1].position = sf::Vector2f((row + 1) * ts->getTileSize().x, col * ts->getTileSize().y);
+	quad[2].position = sf::Vector2f((row + 1) * ts->getTileSize().x, (col + 1) * ts->getTileSize().y);
+	quad[3].position = sf::Vector2f(row * ts->getTileSize().x, (col + 1) * ts->getTileSize().y);
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const

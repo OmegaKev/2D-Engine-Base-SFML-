@@ -1,7 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <vector>
-#include "Tile.h"
+#include "TileReference.h"
 
 class TileSet
 {
