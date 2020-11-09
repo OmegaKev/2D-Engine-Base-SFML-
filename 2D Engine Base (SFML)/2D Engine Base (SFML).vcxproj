@@ -22,10 +22,12 @@
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\Tile.cpp" />
     <ClCompile Include="Source\TileMap.cpp" />
+    <ClCompile Include="Source\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Header\Tile.h" />
     <ClInclude Include="Header\TileMap.h" />
+    <ClInclude Include="Header\TileSet.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Texture\TestTexture1.png" />
