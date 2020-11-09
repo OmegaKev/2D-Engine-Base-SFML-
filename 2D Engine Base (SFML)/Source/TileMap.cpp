@@ -49,7 +49,7 @@ bool TileMap::load()
 	return true;
 }
 
-void TileMap::setTexCoords(sf::Vertex* quad, int tu, int tv)
+void TileMap::setTexCoords(sf::Vertex* quad, const int &tu, const int &tv)
 {
 	// Set the texture coordinates for the 4 points of the quad
 	quad[0].texCoords = sf::Vector2f(tu * ts->getTileSize().x, tv * ts->getTileSize().y);
@@ -59,7 +59,7 @@ void TileMap::setTexCoords(sf::Vertex* quad, int tu, int tv)
 }
 
 // Sets a vertex quad position based on the row and column of the map
-void TileMap::setDefaultTilePosition(sf::Vertex* quad, int row, int col)
+void TileMap::setDefaultTilePosition(sf::Vertex* quad, const int& row, const int& col)
 {
 	// Set the position coordinates for the 4 points on the quad
 	quad[0].position = sf::Vector2f(row * ts->getTileSize().x, col * ts->getTileSize().y);

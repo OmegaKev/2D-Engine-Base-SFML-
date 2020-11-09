@@ -19,3 +19,8 @@ void Tile::setVertexPointer(sf::Vertex* quad)
 {
 	this->quad = quad;
 }
+
+std::string Tile::to_string() const
+{
+	return std::string("( " + std::to_string(this->quad->position.x) + ", " + std::to_string(this->quad->position.y) + "): ");
+}

@@ -8,5 +8,7 @@ private:
 	sf::Vector2i graphic_location = sf::Vector2i(-1, -1);
 public:
 	TileReference(sf::String name, sf::Vector2i graphic_location);
+	sf::String getName();
 	sf::Vector2i get();
+	std::string to_string() const;
 };

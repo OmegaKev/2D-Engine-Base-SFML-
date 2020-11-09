@@ -16,4 +16,5 @@ public:
 	Tile(TileReference& tile);
 	TileReference& get();
 	void setVertexPointer(sf::Vertex* quad);
+	std::string to_string() const;
 };

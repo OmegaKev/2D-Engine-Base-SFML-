@@ -16,8 +16,8 @@ private:
 	bool repeat = false;				// Indicates whether the map will loop or display blank tiles past the array
 	float scroll_ratio = 1.0;			// Controls how fast the tile map will scroll against movement
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	void setTexCoords(sf::Vertex* quad, int tu, int tv);
-	void setDefaultTilePosition(sf::Vertex* quad, int row, int col);
+	void setTexCoords(sf::Vertex* quad, const int& tu, const int& tv);
+	void setDefaultTilePosition(sf::Vertex* quad, const int &row, const int &col);
 public:
 	TileMap(TileSet *ts, const int* map, sf::Vector2u m_size);
 	bool load();
