@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "GameMap.h"
 #include "TileMap.h"
 
 int main()
@@ -7,13 +8,13 @@ int main()
 	sf::RenderWindow window(sf::VideoMode(1000, 1000), "SFML(2.5.1) 2D Engine");
 	
 	// Create a basic 64x64 tileset to use with the tile map
-	TileSet t1 = TileSet("Beta1", "Texture/TestTexture1.png", sf::Vector2u(64, 64));
-	t1.addTile(&TileReference("Grass",	sf::Vector2i(0, 0)));
-	t1.addTile(&TileReference("Rock",	sf::Vector2i(1, 0)));
-	t1.addTile(&TileReference("Wall1",	sf::Vector2i(2, 0)));
-	t1.addTile(&TileReference("Wall2",	sf::Vector2i(3, 0)));
-	t1.addTile(&TileReference("Sand",	sf::Vector2i(0, 1)));
-	t1.addTile(&TileReference("Water",	sf::Vector2i(1, 1)));
+	TileSet ts1 = TileSet("Beta1", "Texture/TestTexture1.png", sf::Vector2u(64, 64));
+	ts1.addTile(&TileReference("Grass",	sf::Vector2i(0, 0)));
+	ts1.addTile(&TileReference("Rock",	sf::Vector2i(1, 0)));
+	ts1.addTile(&TileReference("Wall1",	sf::Vector2i(2, 0)));
+	ts1.addTile(&TileReference("Wall2",	sf::Vector2i(3, 0)));
+	ts1.addTile(&TileReference("Sand",	sf::Vector2i(0, 1)));
+	ts1.addTile(&TileReference("Water",	sf::Vector2i(1, 1)));
 	
 	const int map1[] = { 2, 2, 2, 2, 2,
 						 2, 0, 3, 3, 2,
@@ -21,8 +22,13 @@ int main()
 						 2, 0, 0, 0, 2,
 						 2, 2, 2, 2, 2 };
 
-	TileMap m1 = TileMap(&t1, map1, sf::Vector2u(5, 5));
-	m1.load();
+	// Build TileMap using the TileSet and map data
+	TileMap m1 = TileMap(&ts1, map1, sf::Vector2u(5, 5));
+
+	// Create a game map and add the tilemap as the first layer
+	GameMap gm1 = GameMap();
+	gm1.addLayer(&TileMap(&ts1, map1, sf::Vector2u(5, 5)));
+	gm1.load();
 
 	// Main SFML Loop
 	while (window.isOpen())
@@ -36,7 +42,7 @@ int main()
 
 		// Draw to the window after clearing the frame
 		window.clear();
-		window.draw(m1);
+		window.draw(gm1);
 		window.display();
 	}
 	return 0;
