@@ -28,38 +28,40 @@ bool TileMap::load()
 		for (int j = 0; j < m_size.y; ++j)
 		{
 			int tile_index = raw_map[i + j * m_size.x];
+			TileReference tile_ref = this->ts->getTile(tile_index);
 
 			// Grab the texture coordinates for the tile
-			int tu = this->ts->getTile(tile_index).get().x;
-			int tv = this->ts->getTile(tile_index).get().y;
+			//int tu = this->ts->getTile(tile_index).get().x;
+			//int tv = this->ts->getTile(tile_index).get().y;
 
 			// Manipulate 1 quad at a time
 			sf::Vertex * quad = &m_va[(i + j * m_size.x) * 4];
 			
 			// Create the map and hold pointers to their data
-			map.push_back(Tile(this->ts->getTile(tile_index)));
+			map.push_back(tile_ref);
 			map.back().setVertexPointer(quad);
 
 			// Set Tex Coordinates and position of tiles
-			setTexCoords(quad, tu, tv);
-			setDefaultTilePosition(quad, i, j);
+			setQuadTexCoords(quad, tile_ref);
+			setQuadDefaultTilePosition(quad, i, j);
 		}
 	}
 	
 	return true;
 }
 
-void TileMap::setTexCoords(sf::Vertex* quad, const int &tu, const int &tv)
+void TileMap::setQuadTexCoords(sf::Vertex* quad, TileReference &t_ref)
 {
+	// TODO: Use separate get function to allow for animated tiles to be easily exchanged
 	// Set the texture coordinates for the 4 points of the quad
-	quad[0].texCoords = sf::Vector2f(tu * ts->getTileSize().x, tv * ts->getTileSize().y);
-	quad[1].texCoords = sf::Vector2f((tu + 1) * ts->getTileSize().x, tv * ts->getTileSize().y);
-	quad[2].texCoords = sf::Vector2f((tu + 1) * ts->getTileSize().x, (tv + 1) * ts->getTileSize().y);
-	quad[3].texCoords = sf::Vector2f(tu * ts->getTileSize().x, (tv + 1) * ts->getTileSize().y);
+	quad[0].texCoords = t_ref.getTexCoords()[0];
+	quad[1].texCoords = t_ref.getTexCoords()[1];
+	quad[2].texCoords = t_ref.getTexCoords()[2];
+	quad[3].texCoords = t_ref.getTexCoords()[3];
 }
 
 // Sets a vertex quad position based on the row and column of the map
-void TileMap::setDefaultTilePosition(sf::Vertex* quad, const int& row, const int& col)
+void TileMap::setQuadDefaultTilePosition(sf::Vertex* quad, const int& row, const int& col)
 {
 	// Set the position coordinates for the 4 points on the quad
 	quad[0].position = sf::Vector2f(row * ts->getTileSize().x, col * ts->getTileSize().y);

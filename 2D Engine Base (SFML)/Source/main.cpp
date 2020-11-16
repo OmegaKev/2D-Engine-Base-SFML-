@@ -9,12 +9,12 @@ int main()
 	
 	// Create a basic 64x64 tileset to use with the tile map
 	TileSet ts1 = TileSet("Beta1", "Texture/TestTexture1.png", sf::Vector2u(64, 64));
-	ts1.addTile(&TileReference("Grass",	sf::Vector2i(0, 0)));
-	ts1.addTile(&TileReference("Rock",	sf::Vector2i(1, 0)));
-	ts1.addTile(&TileReference("Wall1",	sf::Vector2i(2, 0)));
-	ts1.addTile(&TileReference("Wall2",	sf::Vector2i(3, 0)));
-	ts1.addTile(&TileReference("Sand",	sf::Vector2i(0, 1)));
-	ts1.addTile(&TileReference("Water",	sf::Vector2i(1, 1)));
+	ts1.addTile(&TileReference("Grass",	sf::Vector2i(0, 0), ts1.getTileSize()));
+	ts1.addTile(&TileReference("Rock",	sf::Vector2i(1, 0), ts1.getTileSize()));
+	ts1.addTile(&TileReference("Wall1",	sf::Vector2i(2, 0), ts1.getTileSize()));
+	ts1.addTile(&TileReference("Wall2",	sf::Vector2i(3, 0), ts1.getTileSize()));
+	ts1.addTile(&TileReference("Sand",	sf::Vector2i(0, 1), ts1.getTileSize()));
+	ts1.addTile(&TileReference("Water",	sf::Vector2i(1, 1), ts1.getTileSize()));
 	
 	const int map1[] = { 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
 						 2, 0, 3, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2,

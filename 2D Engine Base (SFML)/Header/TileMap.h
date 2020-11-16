@@ -18,8 +18,8 @@ private:
 	
 	// Private Functions
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-	void setTexCoords(sf::Vertex* quad, const int& tu, const int& tv);
-	void setDefaultTilePosition(sf::Vertex* quad, const int &row, const int &col);
+	void setQuadTexCoords(sf::Vertex* quad, TileReference &t_ref);
+	void setQuadDefaultTilePosition(sf::Vertex* quad, const int &row, const int &col);
 public:
 	TileMap(TileSet *ts, const int* map, sf::Vector2u m_size);
 	bool load();

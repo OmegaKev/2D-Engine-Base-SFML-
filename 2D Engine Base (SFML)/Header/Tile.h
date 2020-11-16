@@ -2,8 +2,6 @@
 #include <SFML/Graphics.hpp>
 #include "TileSet.h"
 
-
-
 // This class is designed to hold a pointer to a tile reference and any unique properties.
 class Tile
 {
