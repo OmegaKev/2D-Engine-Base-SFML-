@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\GameMap.cpp" />
     <ClCompile Include="Source\Tile.cpp" />
@@ -27,6 +28,7 @@
     <ClCompile Include="Source\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Game.h" />
     <ClInclude Include="Header\GameMap.h" />
     <ClInclude Include="Header\Tile.h" />
     <ClInclude Include="Header\TileMap.h" />
