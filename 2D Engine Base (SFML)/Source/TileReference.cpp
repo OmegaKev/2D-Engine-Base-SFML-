@@ -102,12 +102,17 @@ void AnimatedTileReference::update(sf::Time elapsed)
 	this->frame_count_total += elapsed.asMilliseconds();
 	sf::Uint16 ms_per_frame = sec_per_frame * 1000;
 	sf::Uint16 num_frames = this->getTotalFrames();
-	
-	// Loop frame count back into valid frame range when exceeding number of frames
-	if(this->frame_count_total >= ms_per_frame * num_frames)
-		this->frame_count_total %= ms_per_frame;
 
 	// Update frame value when passing seconds per frame
 	if (this->frame_count_total >= (frame_value + 1) * ms_per_frame)
+	{
 		this->frame_value = this->frame_count_total / 1000;
+
+		// Loop frame count back into valid frame range when exceeding number of frames
+		if (this->frame_value >= num_frames)
+		{
+			this->frame_count_total %= ms_per_frame;
+			this->frame_value = 0;
+		}
+	}
 }
