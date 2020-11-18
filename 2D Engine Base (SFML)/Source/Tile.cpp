@@ -1,13 +1,14 @@
 #include "Tile.h"
 
-Tile::Tile(TileSet &ts, int tile_index)
+Tile::Tile(TileSet& ts, int tile_index, sf::Vertex* quad)
 {
-	this->container = &ts.getTile(tile_index);
+	Tile(ts.getTile(tile_index), quad);
 }
 
-Tile::Tile(TileReference& tile)
+Tile::Tile(TileReference& tile, sf::Vertex *quad)
 {
 	this->container = &tile;
+	this->setVertexPointer(quad);
 }
 
 TileReference& Tile::get()
@@ -18,6 +19,16 @@ TileReference& Tile::get()
 void Tile::setVertexPointer(sf::Vertex* quad)
 {
 	this->quad = quad;
+}
+
+sf::Vertex *& Tile::getVertexPointer()
+{
+	return this->quad;
+}
+
+void Tile::updateFrame()
+{
+	this->quad->texCoords = this->container->getTexCoords().at(0);
 }
 
 std::string Tile::to_string() const

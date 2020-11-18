@@ -38,8 +38,7 @@ bool TileMap::load()
 			sf::Vertex * quad = &m_va[(i + j * m_size.x) * 4];
 			
 			// Create the map and hold pointers to their data
-			map.push_back(tile_ref);
-			map.back().setVertexPointer(quad);
+			map.push_back(Tile(tile_ref, quad));
 
 			// Set Tex Coordinates and position of tiles
 			setQuadTexCoords(quad, tile_ref);

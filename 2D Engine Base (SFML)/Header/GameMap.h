@@ -5,9 +5,9 @@
 class GameMap : public sf::Drawable, public sf::Transformable
 {
 private:
-	sf::String name = "Undefined Map";
-	TileMap* primary_layer;
-	std::vector<TileMap> vec_layer;
+	sf::String name = "Undefined Map";	// Name of Map
+	TileMap* primary_layer;				// Pointer to primary layer (Usually 0 Layer)
+	std::vector<TileMap> vec_layer;		// Holds all the Tilemap Layers
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 public:
 	void addLayer(TileMap* tile_map);
