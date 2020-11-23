@@ -65,12 +65,9 @@ bool TileMap::load()
 
 void TileMap::setQuadTexCoords(sf::Vertex* quad, TileReference &t_ref)
 {
-	// TODO: Use separate get function to allow for animated tiles to be easily exchanged
 	// Set the texture coordinates for the 4 points of the quad
-	quad[0].texCoords = t_ref.getTexCoords()[0];
-	quad[1].texCoords = t_ref.getTexCoords()[1];
-	quad[2].texCoords = t_ref.getTexCoords()[2];
-	quad[3].texCoords = t_ref.getTexCoords()[3];
+	for (int i = 0; i < 4; i++)
+		quad[i].texCoords = t_ref.getTexCoords()[i];
 }
 
 // Sets a vertex quad position based on the row and column of the map
@@ -85,10 +82,9 @@ void TileMap::setQuadDefaultTilePosition(sf::Vertex* quad, const int& row, const
 
 void TileMap::setQuadColor(sf::Vertex* quad, const sf::Color& color)
 {
-	quad[0].color = color;
-	quad[1].color = color;
-	quad[2].color = color;
-	quad[3].color = color;
+	// Set the texture coordinates for the 4 points of the quad
+	for (int i = 0; i < 4; i++)
+		quad[i].color = color;
 }
 
 sf::Uint32 TileMap::getTotalMapArea()
