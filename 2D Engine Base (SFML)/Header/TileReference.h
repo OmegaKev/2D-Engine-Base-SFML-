@@ -8,6 +8,7 @@ private:
 	// Private Variables
 	sf::String name = "UNDEFINED";										// Name of the reference tile
 	sf::Vector2i graphic_location = sf::Vector2i(-1, -1);				// Holds the starting graphic location
+	std::vector<sf::Vertex *> quad_list = std::vector<sf::Vertex *>();	// Hold a pointer to every quad that uses this tile
 protected:
 	// Protected
 	TileReference() {};
@@ -25,16 +26,17 @@ public:
 	std::vector<sf::Vector2f>& getTexCoords();	
 	void setName(sf::String& name);
 	void setGraphicLocation(sf::Vector2i& graphic_location);
+	void storeQuadReference(sf::Vertex*& quad_pointer);
 };
 
 class AnimatedTileReference : public TileReference
 {
 private:
-	sf::Uint16 sec_per_frame;						// How many seconds before we advance the frame
+	sf::Uint16 msec_per_frame;						// How many milliseconds before we advance the frame
 	sf::Uint16 frame_value = 0;						// Holds the current frame value
 	sf::Uint32 frame_count_total = 0;				// Holds the frame count total in milliseconds
 public:
-	AnimatedTileReference(sf::String name, std::vector<sf::Vector2i> &&graphic_location, const sf::Vector2u& tile_size, sf::Uint16 sec_per_frame, const bool& loopback = false);
+	AnimatedTileReference(sf::String name, std::vector<sf::Vector2i> &&graphic_location, const sf::Vector2u& tile_size, sf::Uint16 msec_per_frame, const bool& loopback = false);
 	std::vector<sf::Vector2f>& getTexCoords();
 	sf::Uint16 getTotalFrames();
 	void update(sf::Time elapsed);

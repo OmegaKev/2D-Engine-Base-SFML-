@@ -7,6 +7,7 @@
 class TileMap : public sf::Drawable, public sf::Transformable
 {
 private:
+	static const sf::Vector2u SCR_SIZE;
 	sf::Texture m_tx;					// Vertex Array Texture
 	sf::VertexArray m_va;				// Vertex Array Data
 	const int* raw_map;					// Holds the array of tile by their value
@@ -20,7 +21,9 @@ private:
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 	void setQuadTexCoords(sf::Vertex* quad, TileReference &t_ref);
 	void setQuadDefaultTilePosition(sf::Vertex* quad, const int &row, const int &col);
+	void setQuadColor(sf::Vertex* quad, const sf::Color& color);
+	sf::Uint32 getTotalMapArea();
 public:
-	TileMap(TileSet *ts, const int* map, sf::Vector2u m_size);
+	TileMap(TileSet *ts, const int* map, sf::Vector2u m_size, bool map_repeat = false);
 	bool load();
 };

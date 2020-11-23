@@ -1,4 +1,5 @@
 #include <SFML/Graphics.hpp>
+#include "Game.h"
 #include "GameMap.h"
 #include "TileMap.h"
 #include <memory>
@@ -16,6 +17,8 @@ int main()
 	ts1.addTile(&TileReference("Wall2",	sf::Vector2i(3, 0), ts1.getTileSize()));
 	ts1.addTile(&TileReference("Sand",	sf::Vector2i(0, 1), ts1.getTileSize()));
 	ts1.addTile(&TileReference("Water",	sf::Vector2i(1, 1), ts1.getTileSize()));
+	
+	// Animated Tile
 	std::unique_ptr<AnimatedTileReference> p1(new AnimatedTileReference("Clock1t5", {sf::Vector2i(3, 0), sf::Vector2i(3, 1), sf::Vector2i(3, 2), sf::Vector2i(3, 3), sf::Vector2i(3, 4)}, ts1.getTileSize(), sf::Uint16(1), false));
 	ts1.addTile(p1.get());
 
@@ -30,6 +33,9 @@ int main()
 	GameMap gm1 = GameMap();
 	gm1.addLayer(&TileMap(&ts1, map1, sf::Vector2u(16, 5)));
 	gm1.load();
+
+	// Our Game object
+	Game game = Game(&window, sf::Vector2u(16, 5));
 
 	// Main SFML Loop
 	while (window.isOpen())

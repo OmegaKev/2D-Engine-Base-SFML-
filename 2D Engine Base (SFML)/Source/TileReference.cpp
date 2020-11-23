@@ -67,11 +67,16 @@ std::vector<sf::Vector2f>& TileReference::getTexCoords()
 	return this->getTexCoords(0);
 }
 
-AnimatedTileReference::AnimatedTileReference(sf::String name, std::vector<sf::Vector2i>&& graphic_location, const sf::Vector2u& tile_size, sf::Uint16 sec_per_frame, const bool& loopback)
+void TileReference::storeQuadReference(sf::Vertex*& quad_pointer)
+{
+	this->quad_list.push_back(quad_pointer);
+}
+
+AnimatedTileReference::AnimatedTileReference(sf::String name, std::vector<sf::Vector2i>&& graphic_location, const sf::Vector2u& tile_size, sf::Uint16 msec_per_frame, const bool& loopback)
 {
 	this->setName(name);
 	this->setGraphicLocation(graphic_location[0]);
-	this->sec_per_frame = sec_per_frame;
+	this->msec_per_frame = msec_per_frame;
 
 	// Add additional frames if loop back parameter is given
 	if (loopback)
@@ -100,19 +105,16 @@ sf::Uint16 AnimatedTileReference::getTotalFrames()
 void AnimatedTileReference::update(sf::Time elapsed)
 {
 	this->frame_count_total += elapsed.asMilliseconds();
-	sf::Uint16 ms_per_frame = sec_per_frame * 1000;
 	sf::Uint16 num_frames = this->getTotalFrames();
 
-	// Update frame value when passing seconds per frame
-	if (this->frame_count_total >= (frame_value + 1) * ms_per_frame)
+	// Update frame value when passing milliseconds per frame
+	if (this->frame_count_total >= (frame_value + 1) * this->msec_per_frame)
 	{
-		this->frame_value = this->frame_count_total / 1000;
-
 		// Loop frame count back into valid frame range when exceeding number of frames
-		if (this->frame_value >= num_frames)
-		{
-			this->frame_count_total %= ms_per_frame;
-			this->frame_value = 0;
-		}
+		if ((this->frame_count_total / 1000) >= num_frames)
+			this->frame_count_total %= (this->msec_per_frame * num_frames);
+		
+		// Update the frame value
+		this->frame_value = this->frame_count_total / 1000;
 	}
 }
