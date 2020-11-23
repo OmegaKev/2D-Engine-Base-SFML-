@@ -26,12 +26,24 @@ sf::Vector2u TileSet::getTileSize()
 }
 
 // Returns a reference to the tile at the index
-TileReference& TileSet::getTile(int index)
+std::shared_ptr<TileReference>& TileSet::getTile(int index)
 {
 	return this->t_ref.at(index);
 }
 
 void TileSet::addTile(TileReference* tile)
 {
-	this->t_ref.push_back(*tile);
+	std::shared_ptr<TileReference> sp_tile = std::shared_ptr<TileReference>(tile);
+	this->t_ref.push_back(sp_tile);
+
+	// Check if tile is animated and add it to the animated tile vector if so.
+	if (dynamic_cast<AnimatedTileReference*>(tile) != NULL)
+		this->at_ref.push_back(sp_tile);
+		
+}
+
+void TileSet::updateAnimatedTiles(const sf::Time& elapsed)
+{
+	for (auto& anim_tile : this->at_ref)
+		dynamic_cast<AnimatedTileReference*>(anim_tile.get())->update(elapsed);
 }

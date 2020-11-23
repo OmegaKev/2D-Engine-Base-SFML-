@@ -26,4 +26,5 @@ private:
 public:
 	TileMap(TileSet *ts, const int* map, sf::Vector2u m_size, bool map_repeat = false);
 	bool load();
+	TileSet* getTileSet() const;
 };

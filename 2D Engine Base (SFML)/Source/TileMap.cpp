@@ -37,7 +37,7 @@ bool TileMap::load()
 		for (int j = 0; j < m_size.y || j < SCR_SIZE.y; ++j)
 		{
 			int tile_index = raw_map[(i % m_size.x) + (j % m_size.y) * m_size.x];
-			TileReference tile_ref = this->ts->getTile(tile_index);
+			TileReference *tile_ref = this->ts->getTile(tile_index).get();
 
 			// Manipulate 1 quad at a time
 			sf::Vertex * quad = &m_va[(i + j * m_size.x) * 4];
@@ -46,16 +46,16 @@ bool TileMap::load()
 			if (!this->repeat && (i >= m_size.x || j >= m_size.y))
 			{
 				// TODO: Create unique blank tile
-				tile_ref = this->ts->getTile(0);
+				tile_ref = this->ts->getTile(0).get();
 				setQuadColor(quad, sf::Color::Transparent);
 			}
 			
 			// Create the map and hold pointers to their data
-			map.push_back(Tile(tile_ref, quad));
-			tile_ref.storeQuadReference(quad);
+			map.push_back(Tile(*tile_ref, quad));
+			tile_ref->storeQuadReference(quad);
 
 			// Set Tex Coordinates and position of tiles
-			setQuadTexCoords(quad, tile_ref);
+			setQuadTexCoords(quad, *tile_ref);
 			setQuadDefaultTilePosition(quad, i, j);
 		}
 	}
@@ -94,6 +94,11 @@ void TileMap::setQuadColor(sf::Vertex* quad, const sf::Color& color)
 sf::Uint32 TileMap::getTotalMapArea()
 {
 	return this->m_size.x * this->m_size.y;
+}
+
+TileSet* TileMap::getTileSet() const
+{
+	return this->ts;
 }
 
 void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const

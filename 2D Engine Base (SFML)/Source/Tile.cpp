@@ -2,7 +2,7 @@
 
 Tile::Tile(TileSet& ts, int tile_index, sf::Vertex* quad)
 {
-	Tile(ts.getTile(tile_index), quad);
+	Tile(*ts.getTile(tile_index), quad);
 }
 
 Tile::Tile(TileReference& tile, sf::Vertex *quad)

@@ -81,7 +81,7 @@ AnimatedTileReference::AnimatedTileReference(sf::String name, std::vector<sf::Ve
 	// Add additional frames if loop back parameter is given
 	if (loopback)
 	{
-		for (int i = graphic_location.size() - 2; i >= 0; i--)
+		for (int i = graphic_location.size() - 2; i >= 1; i--)
 			graphic_location.push_back(graphic_location.at(i));
 	}
 
@@ -102,7 +102,7 @@ sf::Uint16 AnimatedTileReference::getTotalFrames()
 	return this->texCoord.size();
 }
 
-void AnimatedTileReference::update(sf::Time elapsed)
+void AnimatedTileReference::update(const sf::Time &elapsed)
 {
 	this->frame_count_total += elapsed.asMilliseconds();
 	sf::Uint16 num_frames = this->getTotalFrames();
@@ -111,10 +111,28 @@ void AnimatedTileReference::update(sf::Time elapsed)
 	if (this->frame_count_total >= (frame_value + 1) * this->msec_per_frame)
 	{
 		// Loop frame count back into valid frame range when exceeding number of frames
-		if ((this->frame_count_total / 1000) >= num_frames)
+		if ((this->frame_count_total / this->msec_per_frame) >= num_frames)
 			this->frame_count_total %= (this->msec_per_frame * num_frames);
 		
 		// Update the frame value
-		this->frame_value = this->frame_count_total / 1000;
+		this->frame_value = this->frame_count_total / this->msec_per_frame;
+		this->updateQuadTextures(this->frame_value);
+	}
+}
+
+void AnimatedTileReference::updateQuadTextures(const int &index)
+{
+	if (index >= this->texCoord.size())
+	{
+		std::cout << "Error: Invalid Frame Given: " + index << std::endl;
+		return;
+	}
+	// Update all the quads referenced in quad list
+	for (auto& quad : quad_list)
+	{
+		quad[0].texCoords = TileReference::getTexCoords(index).at(0);
+		quad[1].texCoords = TileReference::getTexCoords(index).at(1);
+		quad[2].texCoords = TileReference::getTexCoords(index).at(2);
+		quad[3].texCoords = TileReference::getTexCoords(index).at(3);
 	}
 }

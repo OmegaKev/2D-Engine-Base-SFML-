@@ -1,10 +1,12 @@
 #pragma once
 #include "TileMap.h"
+#include "Game.h"
 #include <vector>
 
 class GameMap : public sf::Drawable, public sf::Transformable
 {
 private:
+	Game* game_parent;					// Game parent pointer					
 	sf::String name = "Undefined Map";	// Name of Map
 	TileMap* primary_layer;				// Pointer to primary layer (Usually 0 Layer)
 	std::vector<TileMap> vec_layer;		// Holds all the Tilemap Layers
@@ -13,6 +15,7 @@ public:
 	void addLayer(TileMap* tile_map);
 	void setPrimaryLayer(TileMap &layer);
 	void setMapName(sf::String name);
+	void setGameParent(Game* game_parent);
 	bool load();
 	sf::String getName();
 	TileMap& getPrimaryLayer();

@@ -17,6 +17,11 @@ void GameMap::setMapName(sf::String name)
 	this->name = name;
 }
 
+void GameMap::setGameParent(Game* game_parent)
+{
+	this->game_parent = game_parent;
+}
+
 bool GameMap::load()
 {
 	for (auto& layer : this->vec_layer)
@@ -47,6 +52,7 @@ void GameMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	for (auto &layer : this->vec_layer)
 	{
+		layer.getTileSet()->updateAnimatedTiles(this->game_parent->getClock().getElapsedTime());
 		target.draw(layer);
 	}
 }
