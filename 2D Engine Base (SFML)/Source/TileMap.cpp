@@ -4,7 +4,7 @@
 // Declare Screen Size here for now
 const sf::Vector2u TileMap::SCR_SIZE = sf::Vector2u(16, 16);
 
-TileMap::TileMap(TileSet *ts, const int* map, sf::Vector2u m_size, bool map_repeat)
+TileMap::TileMap(TileSet *ts, RawMap* raw_map, sf::Vector2u m_size, bool map_repeat)
 {
 	// If we fail to load the texture, abort
 	if (!m_tx.loadFromFile(ts->getFileLocation()))
@@ -13,7 +13,7 @@ TileMap::TileMap(TileSet *ts, const int* map, sf::Vector2u m_size, bool map_repe
 	}
 	this->ts = ts;
 	this->m_size = m_size;
-	this->raw_map = map;
+	this->raw_map = std::unique_ptr<RawMap>(raw_map);
 	this->repeat = map_repeat;
 }
 
@@ -31,12 +31,15 @@ bool TileMap::load()
 	m_va.setPrimitiveType(sf::Quads);
 	m_va.resize(vert_size.x * vert_size.y * 4);
 
+	// Get our raw map data
+	RawMap* rm = raw_map.get();
+
 	// Create our vertex array by iterating through the map
 	for (int i = 0; i < m_size.x || i < SCR_SIZE.x; ++i)
 	{
 		for (int j = 0; j < m_size.y || j < SCR_SIZE.y; ++j)
 		{
-			int tile_index = raw_map[(i % m_size.x) + (j % m_size.y) * m_size.x];
+			int tile_index = rm->getMapData()[(i % rm->getSize().x) + (j % rm->getSize().y) * m_size.x];
 			TileReference *tile_ref = this->ts->getTile(tile_index).get();
 
 			// Manipulate 1 quad at a time
@@ -107,4 +110,30 @@ void TileMap::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 	// Draw the Vertex Array
 	target.draw(m_va, states);
+}
+
+RawMap::RawMap(std::vector<int>& map, sf::Vector2u& size)
+{
+	this->setMapData(map);
+	this->setSize(size);
+}
+
+std::vector<int>& RawMap::getMapData()
+{
+	return this->map_data;
+}
+
+sf::Vector2u RawMap::getSize() const
+{
+	return this->size;
+}
+
+void RawMap::setMapData(const std::vector<int>& map_data)
+{
+	this->map_data = map_data;
+}
+
+void RawMap::setSize(const sf::Vector2u& size)
+{
+	this->size = size;
 }
