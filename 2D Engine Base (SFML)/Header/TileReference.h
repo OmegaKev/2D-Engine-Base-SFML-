@@ -42,7 +42,7 @@ class AnimatedTileReference : public TileReference
 private:
 	sf::Uint16 msec_per_frame;						// How many milliseconds before we advance the frame
 	sf::Uint16 frame_value = 0;						// Holds the current frame value
-	sf::Uint32 frame_count_total = 0;				// Holds the frame count total in milliseconds
+	sf::Time elapsed_frames;						// Holds the frame count total
 
 	void updateQuadTextures(const int& index);		// Update all quad references stored by this animated tile
 public:

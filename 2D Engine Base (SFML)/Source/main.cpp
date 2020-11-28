@@ -44,19 +44,31 @@ int main()
 	// Main SFML Loop
 	while (window.isOpen())
 	{
-		// Check for SFML events
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
+			// Make window active and restart the clock
+			if (event.type == sf::Event::GainedFocus)
+			{
+				std::cout << "Gained Focus Event" << std::endl;
+				game.getClock().restart();
+			}
+			if (event.type == sf::Event::LostFocus)
+			{
+				std::cout << "Lost Focus Event" << std::endl;
+			}
 			if (event.type == sf::Event::Closed)window.close();
 		}
-
-
-		// Draw to the window after clearing the frame
-		window.clear();
-		window.draw(gm1);
-		window.display();
-		game.getClock().restart();
+		
+		// Check for SFML events
+		if (window.hasFocus())
+		{
+			// Draw to the window after clearing the frame
+			window.clear();
+			window.draw(gm1);
+			window.display();
+			game.getClock().restart();
+		}
 	}
 
 	return 0;

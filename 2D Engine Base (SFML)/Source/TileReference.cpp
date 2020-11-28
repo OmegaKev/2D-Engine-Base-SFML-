@@ -125,19 +125,23 @@ sf::Uint16 AnimatedTileReference::getTotalFrames()
 
 void AnimatedTileReference::update(const sf::Time &elapsed)
 {
-	this->frame_count_total += elapsed.asMilliseconds();
+	this->elapsed_frames += elapsed;
+	sf::Uint32 frame_count_total = this->elapsed_frames.asMilliseconds();
 	sf::Uint16 num_frames = this->getTotalFrames();
 
 	// Update frame value when passing milliseconds per frame
-	if (this->frame_count_total >= (this->frame_value + 1) * this->msec_per_frame)
+	if (frame_count_total >= (this->frame_value + 1) * this->msec_per_frame)
 	{
 		// Loop frame count back into valid frame range when exceeding number of frames
-		if ((this->frame_count_total / this->msec_per_frame) >= num_frames)
-			this->frame_count_total %= (this->msec_per_frame * num_frames);
+		if ((frame_count_total / this->msec_per_frame) >= num_frames)
+		{
+			frame_count_total %= this->msec_per_frame * num_frames;
+			this->elapsed_frames = sf::milliseconds(frame_count_total);
+		}
 		
 		// Update the frame value
-		this->frame_value = this->frame_count_total / this->msec_per_frame;
-		this->updateQuadTextures(this->frame_value);
+		this->frame_value = frame_count_total / this->msec_per_frame;
+		this->updateQuadTextures(this->frame_value);	
 	}
 }
 
