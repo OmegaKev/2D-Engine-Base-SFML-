@@ -6,8 +6,9 @@
 class Tile
 {
 private:
-	TileReference* container;	// Container Tile
-	sf::Vertex* quad;			// Pointer to Quad
+	TileReference* container;		// Container Tile
+	sf::Vertex* quad;				// Pointer to Quad
+	sf::Uint64 instance_value = -1;
 	//TODO: Object Attachment
 	void updateFrame();			// Update the frame if needed
 public:

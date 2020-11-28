@@ -55,7 +55,6 @@ bool TileMap::load()
 			
 			// Create the map and hold pointers to their data
 			map.push_back(Tile(*tile_ref, quad));
-			tile_ref->storeQuadReference(quad);
 
 			// Set Tex Coordinates and position of tiles
 			setQuadTexCoords(quad, *tile_ref);

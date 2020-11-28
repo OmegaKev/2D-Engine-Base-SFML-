@@ -67,9 +67,30 @@ std::vector<sf::Vector2f>& TileReference::getTexCoords()
 	return this->getTexCoords(0);
 }
 
+// Store the list reference and increase the instance count
 void TileReference::storeQuadReference(sf::Vertex*& quad_pointer)
 {
 	this->quad_list.push_back(quad_pointer);
+	this->instance_count++;
+}
+
+// Null the list reference and reduce the instance count
+void TileReference::removeQuadReference(const sf::Uint64& index)
+{
+	this->quad_list[index] = NULL;
+	this->instance_count--;
+}
+
+// Get the number of tile instances invoked from this tile reference
+sf::Uint64 TileReference::getInstanceCount() const
+{
+	return this->instance_count;
+}
+
+// Return the normal size including NULL elements
+sf::Uint64 TileReference::getQrSize() const
+{
+	return this->quad_list.size();
 }
 
 AnimatedTileReference::AnimatedTileReference(sf::String name, std::vector<sf::Vector2i>&& graphic_location, const sf::Vector2u& tile_size, sf::Uint16 msec_per_frame, const bool& loopback)
@@ -130,6 +151,9 @@ void AnimatedTileReference::updateQuadTextures(const int &index)
 	// Update all the quads referenced in quad list
 	for (auto& quad : quad_list)
 	{
+		// Skip removed quads
+		if (quad == NULL)continue;
+
 		quad[0].texCoords = TileReference::getTexCoords(index).at(0);
 		quad[1].texCoords = TileReference::getTexCoords(index).at(1);
 		quad[2].texCoords = TileReference::getTexCoords(index).at(2);

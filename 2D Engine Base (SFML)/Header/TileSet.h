@@ -9,8 +9,6 @@ private:
 	sf::String tileset_name;
 	sf::String file_location;
 	sf::Vector2u tile_size;
-	//std::vector<TileReference *> t_ref;
-	//std::vector<AnimatedTileReference *> at_ref;
 	std::vector<std::shared_ptr<TileReference>> t_ref;	// Holds a list of dynamically allocated tiles
 	std::vector<std::shared_ptr<TileReference>> at_ref;	// Holds a list of dynamically allocated animation tiles
 public:

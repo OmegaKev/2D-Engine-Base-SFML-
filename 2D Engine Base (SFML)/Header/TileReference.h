@@ -9,6 +9,7 @@ private:
 	// Private Variables
 	sf::String name = "UNDEFINED";										// Name of the reference tile
 	sf::Vector2i graphic_location = sf::Vector2i(-1, -1);				// Holds the starting graphic location
+	sf::Uint64 instance_count = 0;
 protected:
 	// Protected
 	std::vector<sf::Vertex*> quad_list = std::vector<sf::Vertex*>();	// Hold a pointer to every quad that uses this tile
@@ -31,6 +32,9 @@ public:
 	void setName(sf::String& name);
 	void setGraphicLocation(sf::Vector2i& graphic_location);
 	void storeQuadReference(sf::Vertex*& quad_pointer);
+	void removeQuadReference(const sf::Uint64 &index);
+	sf::Uint64 getInstanceCount() const;
+	sf::Uint64 getQrSize() const;
 };
 
 class AnimatedTileReference : public TileReference

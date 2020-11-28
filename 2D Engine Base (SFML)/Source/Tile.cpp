@@ -9,6 +9,10 @@ Tile::Tile(TileReference& tile, sf::Vertex *quad)
 {
 	this->container = &tile;
 	this->setVertexPointer(quad);
+	
+	// Store the Quad Reference and the instance value
+	tile.storeQuadReference(quad);
+	this->instance_value = tile.getQrSize() - 1;
 }
 
 TileReference& Tile::get()
