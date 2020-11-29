@@ -39,15 +39,17 @@ int main()
 
 	// Our Game object
 	Game game = Game(&window, sf::Vector2u(16, 5));
+	game.createCamera(new DebugCamera("Debug Camera 1", &sf::View(sf::FloatRect(0.0f, 0.0f, 400.0f, 400.0f))));
 	gm1.setGameParent(&game);
 
 	// Main SFML Loop
 	while (window.isOpen())
 	{
+		// Check for SFML events
 		sf::Event event;
 		while (window.pollEvent(event))
 		{
-			// Make window active and restart the clock
+			// Restart the clock
 			if (event.type == sf::Event::GainedFocus)
 			{
 				std::cout << "Gained Focus Event" << std::endl;
@@ -58,14 +60,30 @@ int main()
 				std::cout << "Lost Focus Event" << std::endl;
 			}
 			if (event.type == sf::Event::Closed)window.close();
+
+			// Additional event handling only handled when in focus
+			if (window.hasFocus())
+			{
+				// Input handling
+				if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
+				{
+					// TODO: Create Key State system to handle multiple key press release events at once
+					// TEMP: Debug Camera Input
+					game.getCamera()->controller();
+				}
+			}
 		}
 		
-		// Check for SFML events
+		// Run game logic if we have focus
 		if (window.hasFocus())
 		{
+			// Adjust view every frame
+			game.getWindowHandle()->setView(*game.getViewHandle());
+
 			// Draw to the window after clearing the frame
 			window.clear();
 			window.draw(gm1);
+			window.draw(*game.getCamera());
 			window.display();
 			game.getClock().restart();
 		}

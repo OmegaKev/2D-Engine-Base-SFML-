@@ -19,6 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Source\Camera.cpp" />
     <ClCompile Include="Source\Game.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="Source\GameMap.cpp" />
@@ -28,6 +29,7 @@
     <ClCompile Include="Source\TileSet.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Header\Camera.h" />
     <ClInclude Include="Header\Game.h" />
     <ClInclude Include="Header\GameMap.h" />
     <ClInclude Include="Header\Tile.h" />
@@ -121,7 +123,8 @@
     <PostBuildEvent>
       <Command>set SFML=A:\Programming\Visual Studio\Library\32-bit\SFML-2.5.1
 xcopy "%SFML%\bin\*-d-2.dll" "$(TargetDir)" /Y /D
-xcopy "Texture" "$(TargetDir)Texture\" /Y /D /S</Command>
+xcopy "Texture" "$(TargetDir)Texture\" /Y /D /S
+xcopy "Font" "$(TargetDir)Font\" /Y /D /S</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
