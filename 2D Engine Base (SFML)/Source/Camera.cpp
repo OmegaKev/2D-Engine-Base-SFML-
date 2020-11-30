@@ -89,16 +89,26 @@ void DebugCamera::updateDebugText(const sf::Vector2f& position)
 }
 
 // Controls the debug camera and moves the view attached to it
-// Should be used during Keypress events
 void DebugCamera::controller()
 {
 	float speed = this->getSpeed();
+	sf::Vector2f mv = sf::Vector2f();
 
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))this->moveView(sf::Vector2f(0.0f, -1.0f * speed));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))this->moveView(sf::Vector2f(0.0f, 1.0f * speed));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))this->moveView(sf::Vector2f(-1.0f * speed, 0.0f));
-	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))this->moveView(sf::Vector2f(1.0f * speed, 0.0f));
+	// Vertical movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))mv += sf::Vector2f(0.0f, -1.0f * speed);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))mv += sf::Vector2f(0.0f, 1.0f * speed);
 
+	// Horizontal movement
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))mv += sf::Vector2f(-1.0f * speed, 0.0f);
+	else if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))mv += sf::Vector2f(1.0f * speed, 0.0f);
+
+	if (mv.x != 0.0f || mv.y != 0.0f)this->moveView(mv);
+}
+
+void DebugCamera::moveView(const sf::Vector2f& position)
+{
+	Camera::moveView(position);
+	
 	sf::Vector2f pos = this->getView()->getCenter() - (this->getView()->getSize() / 2.0f);
 	this->updateDebugText(pos + this->position_offset);
 }

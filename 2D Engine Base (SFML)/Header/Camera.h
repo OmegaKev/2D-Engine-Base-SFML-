@@ -21,7 +21,7 @@ public:
 	void setName(const sf::String &name);
 	void setView(sf::View *view);
 	void setSpeed(const float& movement_speed);
-	void moveView(const sf::Vector2f& position);
+	virtual void moveView(const sf::Vector2f& position);
 	
 	// Virtual functions that don't exist in base class
 	virtual Camera* type() = 0;
@@ -50,6 +50,7 @@ public:
 	DebugCamera(const sf::String& name, sf::View* view);
 	DebugCamera(const sf::String& name, const Game* game_parent, sf::View* view);
 	virtual void controller() override;
+	virtual void moveView(const sf::Vector2f& position) override;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;
 	virtual DebugCamera* type() override;
 };

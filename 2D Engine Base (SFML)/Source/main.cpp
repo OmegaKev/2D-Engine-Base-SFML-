@@ -67,9 +67,8 @@ int main()
 				// Input handling
 				if (event.type == sf::Event::KeyPressed || event.type == sf::Event::KeyReleased)
 				{
-					// TODO: Create Key State system to handle multiple key press release events at once
-					// TEMP: Debug Camera Input
-					game.getCamera()->controller();
+					// Reserved for future use
+					continue;
 				}
 			}
 		}
@@ -77,7 +76,11 @@ int main()
 		// Run game logic if we have focus
 		if (window.hasFocus())
 		{
-			// Adjust view every frame
+			// TEMP: Debug Camera Input
+			game.getCamera()->controller();
+
+			// Note: View should be moved before doing any drawing
+			// Note: SetView needs to be called every frame to update any view movements
 			game.getWindowHandle()->setView(*game.getViewHandle());
 
 			// Draw to the window after clearing the frame
