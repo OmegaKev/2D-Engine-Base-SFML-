@@ -57,8 +57,10 @@ sf::View* Camera::getView()
 
 DebugCamera::DebugCamera(const sf::String& name, const Game* game_parent, sf::View* view) : Camera(name, game_parent, view)
 {
-	// Load the debug camera text at 0,0
-	this->loadDebugText(this->position_offset);
+	// Load the debug camera text
+	this->loadDebugText();
+	this->text_view = sf::View(*view);			// Make a copy of view for the debug text
+	
 }
 
 DebugCamera::DebugCamera(const sf::String& name, sf::View* view) : DebugCamera(name, NULL, view) {}
@@ -79,13 +81,15 @@ void DebugCamera::setTextPosition(const sf::Vector2f& position)
 	this->text_interface.setPosition(position);
 }
 
-void DebugCamera::updateDebugText(const sf::Vector2f& position)
+void DebugCamera::updateDebugText()
 {
+	// Update debug test interface
+	sf::Vector2f position = this->getView()->getCenter() - (this->getView()->getSize() / 2.0f);
+
 	sf::String str = sf::String(sf::String(this->getName() + "\n"
 		+ "Camera Position: " + std::to_string((int)position.x) + "," + std::to_string((int)position.y)));
 
 	this->text_interface.setString(str);
-	this->setPosition(position);
 }
 
 // Controls the debug camera and moves the view attached to it
@@ -108,12 +112,10 @@ void DebugCamera::controller()
 void DebugCamera::moveView(const sf::Vector2f& position)
 {
 	Camera::moveView(position);
-	
-	sf::Vector2f pos = this->getView()->getCenter() - (this->getView()->getSize() / 2.0f);
-	this->updateDebugText(pos + this->position_offset);
+	this->updateDebugText();
 }
 
-void DebugCamera::loadDebugText(const sf::Vector2f& position)
+void DebugCamera::loadDebugText()
 {
 	// Load this font into memory
 	if (!this->loadFont("Font/Roboto-Regular.ttf"))return;
@@ -121,11 +123,14 @@ void DebugCamera::loadDebugText(const sf::Vector2f& position)
 	this->text_interface.setFont(this->font);
 	this->text_interface.setFillColor(sf::Color::Red);
 	this->text_interface.setCharacterSize(16);
-	this->updateDebugText(position);
+	this->updateDebugText();
 }
 
 void DebugCamera::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
+	// Sets view to text view
+	target.setView(this->text_view);
+
 	// Apply transformations
 	states.transform *= getTransform();
 

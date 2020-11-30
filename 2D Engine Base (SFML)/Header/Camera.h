@@ -11,7 +11,7 @@ class Camera : public sf::Drawable, public sf::Transformable
 private:
 	const Game *game_parent;
 	sf::String name;
-	sf::View *view;
+	sf::View *view;				// Attach Camera to this view
 	float speed = 3.0f;
 public:
 	Camera(const sf::String& name, sf::View* view);
@@ -40,12 +40,12 @@ class DebugCamera: public Camera
 private:
 	sf::Font font;
 	sf::Text text_interface;
-	sf::Vector2f position_offset = sf::Vector2f(0.0f, 0.0f);
+	sf::View text_view;			// A view for the debug text
 
 	bool loadFont(const sf::String& file_location);
-	void loadDebugText(const sf::Vector2f& position);
+	void loadDebugText();
 	void setTextPosition(const sf::Vector2f& position);
-	void updateDebugText(const sf::Vector2f& position);
+	void updateDebugText();
 public:
 	DebugCamera(const sf::String& name, sf::View* view);
 	DebugCamera(const sf::String& name, const Game* game_parent, sf::View* view);
