@@ -59,8 +59,9 @@ DebugCamera::DebugCamera(const sf::String& name, const Game* game_parent, sf::Vi
 {
 	// Load the debug camera text
 	this->loadDebugText();
-	this->text_view = sf::View(*view);			// Make a copy of view for the debug text
-	
+
+	// Make a copy of view for the debug text with a slightly moved right left edge
+	this->text_view = sf::View(sf::FloatRect(-2.0f, 0.0f, (float)view->getSize().x, (float)view->getSize().y));			
 }
 
 DebugCamera::DebugCamera(const sf::String& name, sf::View* view) : DebugCamera(name, NULL, view) {}
@@ -81,11 +82,11 @@ void DebugCamera::setTextPosition(const sf::Vector2f& position)
 	this->text_interface.setPosition(position);
 }
 
+// Update debug test interface
 void DebugCamera::updateDebugText()
 {
-	// Update debug test interface
+	// Get upperleft most position of text view
 	sf::Vector2f position = this->getView()->getCenter() - (this->getView()->getSize() / 2.0f);
-
 	sf::String str = sf::String(sf::String(this->getName() + "\n"
 		+ "Camera Position: " + std::to_string((int)position.x) + "," + std::to_string((int)position.y)));
 
@@ -123,6 +124,8 @@ void DebugCamera::loadDebugText()
 	this->text_interface.setFont(this->font);
 	this->text_interface.setFillColor(sf::Color::Red);
 	this->text_interface.setCharacterSize(16);
+	this->text_interface.setOutlineColor(sf::Color::Black);
+	this->text_interface.setOutlineThickness(1.0f);
 	this->updateDebugText();
 }
 
