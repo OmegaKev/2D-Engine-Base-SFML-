@@ -11,16 +11,19 @@ class Camera : public sf::Drawable, public sf::Transformable
 private:
 	const Game *game_parent;
 	sf::String name;
-	sf::View *view;				// Attach Camera to this view
+	sf::View* master_view;									// View from which properties are pulled
+	std::vector<std::shared_ptr<sf::View>> view_list;		// Attach 1 or more camera's to this view
 	float speed = 3.0f;
 public:
-	Camera(const sf::String& name, sf::View* view);
-	Camera(const sf::String& name, const Game* game_parent, sf::View* view);
+	Camera(const sf::String& name, const sf::View &view);
+	Camera(const sf::String& name, const Game* game_parent, const sf::View &view);
 	virtual ~Camera() {};
+	void addView();
+	void addView(const sf::View &view);
+	void setMasterView(sf::View* view);
 	void setParent(const Game* game_parent);
 	void setName(const sf::String &name);
-	void setView(sf::View *view);
-	void setSpeed(const float& movement_speed);
+	void setSpeed(const float& movement_speed);			// TODO: Refactor
 	virtual void moveView(const sf::Vector2f& position);
 	
 	// Virtual functions that don't exist in base class
@@ -28,10 +31,11 @@ public:
 	virtual void controller() = 0;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const = 0;
 
-	const Game* getParent() const;
-	sf::String getName() const;
-	float getSpeed() const;
-	sf::View* getView();
+	const Game* getParent() const;			// Return the game parent
+	sf::String getName() const;				// Return the name of this camera
+	float getSpeed() const;					// Return the speed of this camera
+	sf::View* getView(int v_index);			// Return the view by index
+	size_t getNumViews() const;			// Returns number of Views attached to camera
 };
 
 // Create our debug camera
@@ -47,8 +51,8 @@ private:
 	void setTextPosition(const sf::Vector2f& position);
 	void updateDebugText();
 public:
-	DebugCamera(const sf::String& name, sf::View* view);
-	DebugCamera(const sf::String& name, const Game* game_parent, sf::View* view);
+	DebugCamera(const sf::String& name, const sf::View &view);
+	DebugCamera(const sf::String& name, const Game* game_parent, const sf::View &view);
 	virtual void controller() override;
 	virtual void moveView(const sf::Vector2f& position) override;
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const override;

@@ -19,7 +19,6 @@ public:
 	
 	sf::Clock& getClock();
 	sf::RenderWindow* getWindowHandle() const;
-	sf::View* getViewHandle() const;
 	sf::Vector2u getScreenSize() const;
 	Camera* getCamera() const;
 };

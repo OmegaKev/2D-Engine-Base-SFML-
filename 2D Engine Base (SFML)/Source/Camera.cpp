@@ -1,13 +1,29 @@
 #include "Camera.h"
 
-Camera::Camera(const sf::String& name, const Game* game_parent, sf::View* view)
+Camera::Camera(const sf::String& name, const Game* game_parent, const sf::View &view)
 {
 	this->setParent(game_parent);
 	this->setName(name);
-	this->setView(view);
+	this->addView(view);
 }
 
-Camera::Camera(const sf::String& name, sf::View* view) : Camera(name, NULL, view){}
+Camera::Camera(const sf::String& name, const sf::View &view) : Camera(name, NULL, view){}
+
+void Camera::addView()
+{
+	this->addView(*this->master_view);
+}
+
+void Camera::addView(const sf::View &view)
+{
+	this->view_list.push_back(std::make_shared<sf::View>(view));
+	if (master_view == NULL)this->setMasterView(this->view_list.back().get());
+}
+
+void Camera::setMasterView(sf::View* view)
+{
+	this->master_view = view;
+}
 
 void Camera::setParent(const Game* game_parent)
 {
@@ -19,11 +35,6 @@ void Camera::setName(const sf::String& name)
 	this->name = name;
 }
 
-void Camera::setView(sf::View* view)
-{
-	this->view = view;
-}
-
 void Camera::setSpeed(const float& movement_speed)
 {
 	this->speed = movement_speed;
@@ -32,7 +43,11 @@ void Camera::setSpeed(const float& movement_speed)
 void Camera::moveView(const sf::Vector2f& position)
 {
 	// TODO: Add constraints to movement
-	this->view->move(position);
+	//		 Adjust movement by scroll rate of each individual view
+	for (auto vp : view_list)
+	{
+		vp.get()->move(position);
+	}
 }
 
 const Game* Camera::getParent() const
@@ -50,21 +65,26 @@ float Camera::getSpeed() const
 	return this->speed;
 }
 
-sf::View* Camera::getView()
+sf::View* Camera::getView(int v_index)
 {
-	return this->view;
+	return this->view_list[v_index].get();
 }
 
-DebugCamera::DebugCamera(const sf::String& name, const Game* game_parent, sf::View* view) : Camera(name, game_parent, view)
+size_t Camera::getNumViews() const
+{
+	return this->view_list.size();
+}
+
+DebugCamera::DebugCamera(const sf::String& name, const Game* game_parent, const sf::View &view) : Camera(name, game_parent, view)
 {
 	// Load the debug camera text
 	this->loadDebugText();
 
 	// Make a copy of view for the debug text with a slightly moved right left edge
-	this->text_view = sf::View(sf::FloatRect(-2.0f, 0.0f, (float)view->getSize().x, (float)view->getSize().y));			
+	this->text_view = sf::View(sf::FloatRect(-2.0f, 0.0f, (float)view.getSize().x, (float)view.getSize().y));			
 }
 
-DebugCamera::DebugCamera(const sf::String& name, sf::View* view) : DebugCamera(name, NULL, view) {}
+DebugCamera::DebugCamera(const sf::String& name, const sf::View &view) : DebugCamera(name, NULL, view) {}
 
 bool DebugCamera::loadFont(const sf::String& file_location)
 {
@@ -86,7 +106,7 @@ void DebugCamera::setTextPosition(const sf::Vector2f& position)
 void DebugCamera::updateDebugText()
 {
 	// Get upperleft most position of text view
-	sf::Vector2f position = this->getView()->getCenter() - (this->getView()->getSize() / 2.0f);
+	sf::Vector2f position = this->getView(0)->getCenter() - (this->getView(0)->getSize() / 2.0f);
 	sf::String str = sf::String(sf::String(this->getName() + "\n"
 		+ "Camera Position: " + std::to_string((int)position.x) + "," + std::to_string((int)position.y)));
 
@@ -131,11 +151,11 @@ void DebugCamera::loadDebugText()
 
 void DebugCamera::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
-	// Sets view to text view
-	target.setView(this->text_view);
-
 	// Apply transformations
 	states.transform *= getTransform();
+
+	// Sets view to text view
+	target.setView(this->text_view);
 
 	// Draw Debug Camera text
 	target.draw(this->text_interface, states);

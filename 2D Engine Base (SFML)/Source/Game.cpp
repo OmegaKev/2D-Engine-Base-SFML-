@@ -33,11 +33,6 @@ sf::RenderWindow* Game::getWindowHandle() const
 	return this->window_handle;
 }
 
-sf::View* Game::getViewHandle() const
-{
-	return this->camera_handle->getView();
-}
-
 sf::Vector2u Game::getScreenSize() const
 {
 	return this->screen_size;

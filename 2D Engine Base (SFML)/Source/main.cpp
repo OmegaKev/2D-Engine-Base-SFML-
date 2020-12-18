@@ -8,6 +8,10 @@ int main()
 {
 	// Set window to size 1000, 1000
 	sf::RenderWindow window(sf::VideoMode(1024, 1024), "SFML(2.5.1) 2D Engine");
+
+	// Our Game object
+	Game game = Game(&window, sf::Vector2u(16, 5));
+	game.createCamera(new DebugCamera("Debug Camera 1", sf::View(sf::FloatRect(0.0f, 0.0f, 400.0f, 400.0f))));
 	
 	// Create a basic 64x64 tileset to use with the tile map
 	TileSet ts1 = TileSet("Beta1", "Texture/TestTexture1.png", sf::Vector2u(64, 64));
@@ -34,13 +38,10 @@ int main()
 
 	// Create a game map and add the tilemap as the first layer
 	GameMap gm1 = GameMap();
+	gm1.setGameParent(&game);
 	gm1.addLayer(new TileMap(&ts1, map1, sf::Vector2u(16, 5)));
 	gm1.load();
-
-	// Our Game object
-	Game game = Game(&window, sf::Vector2u(16, 5));
-	game.createCamera(new DebugCamera("Debug Camera 1", &sf::View(sf::FloatRect(0.0f, 0.0f, 400.0f, 400.0f))));
-	gm1.setGameParent(&game);
+	
 
 	// Main SFML Loop
 	while (window.isOpen())
@@ -81,7 +82,7 @@ int main()
 
 			// Note: View should be moved before doing any drawing
 			// Note: SetView needs to be called every frame to update any view movements
-			game.getWindowHandle()->setView(*game.getViewHandle());
+			//game.getWindowHandle()->setView(*game.getViewHandle());
 
 			// Draw to the window after clearing the frame
 			window.clear();
